@@ -2,8 +2,11 @@
 session_start();
 
 // Base URL definition
-// Adjust this if your project folder name is different
-define('BASE_URL', 'http://localhost/nentetnoviani/');
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+$host = $_SERVER['HTTP_HOST'];
+$base_path = (strpos($host, 'localhost') !== false) ? '/nentetnoviani/' : '/';
+define('BASE_URL', $protocol . $host . $base_path);
+
 
 function base_url($path = '') {
     return BASE_URL . $path;
