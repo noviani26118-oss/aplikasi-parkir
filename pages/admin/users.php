@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             $query = "INSERT INTO tabel_users (nama_user, username, password, role) VALUES ('$nama', '$username', '$password', '$role')";
             if (mysqli_query($conn, $query)) {
+                log_activity("Menambah user baru: $username ($role)");
                 set_flash_message('success', 'User berhasil ditambahkan');
             } else {
                 set_flash_message('danger', 'Gagal menambahkan user: ' . mysqli_error($conn));
@@ -33,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $query = "UPDATE tabel_users SET nama_user='$nama', username='$username', role='$role' $password_query WHERE id_user='$id'";
             if (mysqli_query($conn, $query)) {
+                log_activity("Mengupdate data user ID: $id ($username)");
                 set_flash_message('success', 'User berhasil diupdate');
             } else {
                 set_flash_message('danger', 'Gagal update user: ' . mysqli_error($conn));

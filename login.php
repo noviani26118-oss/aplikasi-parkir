@@ -17,8 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = mysqli_fetch_assoc($result);
         $_SESSION['user'] = $user;
         
-        // Log activity (We will implement log function later, just placeholder logic)
-        // mysqli_query($conn, "INSERT INTO tabel_log_aktivitas ...");
+        log_activity("User " . $user['nama_user'] . " berhasil login.");
 
         set_flash_message('success', 'Login berhasil! Selamat datang ' . $user['nama_user']);
         redirect('index.php');

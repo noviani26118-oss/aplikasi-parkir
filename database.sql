@@ -1,6 +1,7 @@
 -- Database: ukk_parkir
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SESSION sql_require_primary_key = 0;
 START TRANSACTION;
 SET time_zone = "+07:00";
 
@@ -11,17 +12,18 @@ SET time_zone = "+07:00";
 --
 
 CREATE TABLE `tabel_users` (
-  `id_user` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL AUTO_INCREMENT,
   `nama_user` varchar(100) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('admin','petugas','owner') NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_user`),
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tabel_users` (Defaults: admin/admin, petugas/petugas, owner/owner)
--- Passwords are MD5 hashes. 'admin' -> '21232f297a57a5a743894a0e4a801fc3'
+-- Dumping data for table `tabel_users`
 --
 
 INSERT INTO `tabel_users` (`id_user`, `nama_user`, `username`, `password`, `role`, `created_at`) VALUES
@@ -36,9 +38,10 @@ INSERT INTO `tabel_users` (`id_user`, `nama_user`, `username`, `password`, `role
 --
 
 CREATE TABLE `tabel_kendaraan` (
-  `id_kendaraan` int(11) NOT NULL,
+  `id_kendaraan` int(11) NOT NULL AUTO_INCREMENT,
   `nama_kendaraan` varchar(50) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_kendaraan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `tabel_kendaraan` (`id_kendaraan`, `nama_kendaraan`) VALUES
@@ -53,11 +56,12 @@ INSERT INTO `tabel_kendaraan` (`id_kendaraan`, `nama_kendaraan`) VALUES
 --
 
 CREATE TABLE `tabel_area_parkir` (
-  `id_area` int(11) NOT NULL,
+  `id_area` int(11) NOT NULL AUTO_INCREMENT,
   `nama_area` varchar(50) NOT NULL,
   `kapasitas` int(11) NOT NULL,
   `terisi` int(11) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_area`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `tabel_area_parkir` (`id_area`, `nama_area`, `kapasitas`, `terisi`) VALUES
@@ -71,10 +75,12 @@ INSERT INTO `tabel_area_parkir` (`id_area`, `nama_area`, `kapasitas`, `terisi`) 
 --
 
 CREATE TABLE `tabel_tarif` (
-  `id_tarif` int(11) NOT NULL,
+  `id_tarif` int(11) NOT NULL AUTO_INCREMENT,
   `id_kendaraan` int(11) NOT NULL,
   `tarif_per_jam` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_tarif`),
+  KEY `id_kendaraan` (`id_kendaraan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `tabel_tarif` (`id_tarif`, `id_kendaraan`, `tarif_per_jam`) VALUES
@@ -89,7 +95,7 @@ INSERT INTO `tabel_tarif` (`id_tarif`, `id_kendaraan`, `tarif_per_jam`) VALUES
 --
 
 CREATE TABLE `tabel_transaksi` (
-  `id_transaksi` int(11) NOT NULL,
+  `id_transaksi` int(11) NOT NULL AUTO_INCREMENT,
   `kode_transaksi` varchar(20) NOT NULL,
   `id_kendaraan` int(11) NOT NULL,
   `id_area` int(11) NOT NULL,
@@ -100,7 +106,11 @@ CREATE TABLE `tabel_transaksi` (
   `lama_parkir` int(11) DEFAULT NULL COMMENT 'dalam jam',
   `total_bayar` int(11) DEFAULT NULL,
   `status` enum('masuk','keluar') NOT NULL DEFAULT 'masuk',
-  `tanggal_transaksi` date NOT NULL DEFAULT current_timestamp()
+  `tanggal_transaksi` date NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_transaksi`),
+  KEY `id_kendaraan` (`id_kendaraan`),
+  KEY `id_area` (`id_area`),
+  KEY `id_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -110,39 +120,14 @@ CREATE TABLE `tabel_transaksi` (
 --
 
 CREATE TABLE `tabel_log_aktivitas` (
-  `id_log` int(11) NOT NULL,
+  `id_log` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL,
   `aktivitas` text NOT NULL,
-  `waktu` timestamp NOT NULL DEFAULT current_timestamp()
+  `waktu` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_log`),
+  KEY `id_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Indexes for dumped tables
---
-
-ALTER TABLE `tabel_users`
-  ADD PRIMARY KEY (`id_user`),
-  ADD UNIQUE KEY `username` (`username`);
-
-ALTER TABLE `tabel_kendaraan`
-  ADD PRIMARY KEY (`id_kendaraan`);
-
-ALTER TABLE `tabel_area_parkir`
-  ADD PRIMARY KEY (`id_area`);
-
-ALTER TABLE `tabel_tarif`
-  ADD PRIMARY KEY (`id_tarif`),
-  ADD KEY `id_kendaraan` (`id_kendaraan`);
-
-ALTER TABLE `tabel_transaksi`
-  ADD PRIMARY KEY (`id_transaksi`),
-  ADD KEY `id_kendaraan` (`id_kendaraan`),
-  ADD KEY `id_area` (`id_area`),
-  ADD KEY `id_user` (`id_user`);
-
-ALTER TABLE `tabel_log_aktivitas`
-  ADD PRIMARY KEY (`id_log`),
-  ADD KEY `id_user` (`id_user`);
 
 --
 -- AUTO_INCREMENT for dumped tables

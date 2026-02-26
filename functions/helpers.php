@@ -48,4 +48,13 @@ function check_role($allowed_roles) {
         exit;
     }
 }
+function log_activity($activity) {
+    global $conn;
+    if (isset($_SESSION['user'])) {
+        $id_user = $_SESSION['user']['id_user'];
+        $activity = mysqli_real_escape_string($conn, $activity);
+        $query = "INSERT INTO tabel_log_aktivitas (id_user, aktivitas) VALUES ('$id_user', '$activity')";
+        mysqli_query($conn, $query);
+    }
+}
 ?>

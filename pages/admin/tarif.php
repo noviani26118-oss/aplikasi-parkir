@@ -10,22 +10,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id_kendaraan = $_POST['id_kendaraan'];
             $tarif = $_POST['tarif_per_jam'];
             $query = "INSERT INTO tabel_tarif (id_kendaraan, tarif_per_jam) VALUES ('$id_kendaraan', '$tarif')";
-            if (mysqli_query($conn, $query)) set_flash_message('success', 'Tarif berhasil ditambahkan');
-            else set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            if (mysqli_query($conn, $query)) {
+                log_activity("Menambah tarif baru untuk ID Kendaraan: $id_kendaraan (Tarif: $tarif)");
+                set_flash_message('success', 'Tarif berhasil ditambahkan');
+            } else {
+                set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            }
             
         } elseif ($_POST['action'] == 'edit') {
             $id = $_POST['id_tarif'];
             $id_kendaraan = $_POST['id_kendaraan'];
             $tarif = $_POST['tarif_per_jam'];
             $query = "UPDATE tabel_tarif SET id_kendaraan='$id_kendaraan', tarif_per_jam='$tarif' WHERE id_tarif='$id'";
-            if (mysqli_query($conn, $query)) set_flash_message('success', 'Tarif diupdate');
-            else set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            if (mysqli_query($conn, $query)) {
+                log_activity("Mengupdate tarif ID: $id (ID Kendaraan: $id_kendaraan, Tarif: $tarif)");
+                set_flash_message('success', 'Tarif diupdate');
+            } else {
+                set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            }
 
         } elseif ($_POST['action'] == 'delete') {
             $id = $_POST['id_tarif'];
             $query = "DELETE FROM tabel_tarif WHERE id_tarif='$id'";
-            if (mysqli_query($conn, $query)) set_flash_message('success', 'Tarif dihapus');
-            else set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            if (mysqli_query($conn, $query)) {
+                log_activity("Menghapus tarif ID: $id");
+                set_flash_message('success', 'Tarif dihapus');
+            } else {
+                set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            }
         }
     }
 }

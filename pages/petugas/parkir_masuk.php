@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (mysqli_query($conn, $query)) {
             // Update Area Capacity
             mysqli_query($conn, "UPDATE tabel_area_parkir SET terisi = terisi + 1 WHERE id_area = '$id_area'");
+            log_activity("Mencatat kendaraan masuk: $plat_nomor (Kode: $kode_transaksi)");
             set_flash_message('success', 'Kendaraan berhasil masuk. Kode: <b>' . $kode_transaksi . '</b>');
         } else {
             set_flash_message('danger', 'Gagal mencatat transaksi: ' . mysqli_error($conn));

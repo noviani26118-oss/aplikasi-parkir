@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['process_exit'])) {
     
     if (mysqli_query($conn, $query)) {
         mysqli_query($conn, "UPDATE tabel_area_parkir SET terisi = terisi - 1 WHERE id_area = '$id_area'");
+        log_activity("Mencatat kendaraan keluar. ID Transaksi: $id_transaksi");
         // Redirect to print receipt
         echo "<script>window.location.href='cetak_struk.php?id=$id_transaksi';</script>";
         exit;

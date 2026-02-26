@@ -10,22 +10,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $nama = $_POST['nama_area'];
             $kapasitas = $_POST['kapasitas'];
             $query = "INSERT INTO tabel_area_parkir (nama_area, kapasitas) VALUES ('$nama', '$kapasitas')";
-            if (mysqli_query($conn, $query)) set_flash_message('success', 'Area berhasil ditambahkan');
-            else set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            if (mysqli_query($conn, $query)) {
+                log_activity("Menambah area parkir: $nama");
+                set_flash_message('success', 'Area berhasil ditambahkan');
+            } else {
+                set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            }
             
         } elseif ($_POST['action'] == 'edit') {
             $id = $_POST['id_area'];
             $nama = $_POST['nama_area'];
             $kapasitas = $_POST['kapasitas'];
             $query = "UPDATE tabel_area_parkir SET nama_area='$nama', kapasitas='$kapasitas' WHERE id_area='$id'";
-            if (mysqli_query($conn, $query)) set_flash_message('success', 'Area diupdate');
-            else set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            if (mysqli_query($conn, $query)) {
+                log_activity("Mengupdate area parkir ID: $id ($nama)");
+                set_flash_message('success', 'Area diupdate');
+            } else {
+                set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            }
 
         } elseif ($_POST['action'] == 'delete') {
             $id = $_POST['id_area'];
             $query = "DELETE FROM tabel_area_parkir WHERE id_area='$id'";
-            if (mysqli_query($conn, $query)) set_flash_message('success', 'Area dihapus');
-            else set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            if (mysqli_query($conn, $query)) {
+                log_activity("Menghapus area parkir ID: $id");
+                set_flash_message('success', 'Area dihapus');
+            } else {
+                set_flash_message('danger', 'Gagal: ' . mysqli_error($conn));
+            }
         }
     }
 }
