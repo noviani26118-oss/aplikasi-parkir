@@ -8,16 +8,8 @@ $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVE
 $host = $_SERVER['HTTP_HOST'];
 
 // Detect if running on a subdirectory or root
-$script_name = $_SERVER['SCRIPT_NAME'];
-$current_dir = dirname($script_name);
-
-// Fix for Vercel: If script is in /api/ but we're serving from root
-if (strpos($current_dir, '/api') === 0 || $current_dir == '/' || $current_dir == '\\') {
-    $base_path = '/';
-}
-else {
-    $base_path = $current_dir . '/';
-}
+// For cloud platforms like Vercel, we almost always want root '/'
+$base_path = '/';
 
 // Optional: Allow override via environment variable
 if (getenv('BASE_URL')) {
