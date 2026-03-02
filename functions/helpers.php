@@ -10,12 +10,18 @@ $host = $_SERVER['HTTP_HOST'];
 // Detect if running on a subdirectory or root
 $script_name = $_SERVER['SCRIPT_NAME'];
 $current_dir = dirname($script_name);
-// For Vercel or production often just '/'
-$base_path = ($current_dir == '/' || $current_dir == '\\') ? '/' : $current_dir . '/';
+
+// Fix for Vercel: If script is in /api/ but we're serving from root
+if (strpos($current_dir, '/api') === 0 || $current_dir == '/' || $current_dir == '\\') {
+    $base_path = '/';
+}
+else {
+    $base_path = $current_dir . '/';
+}
 
 // Optional: Allow override via environment variable
 if (getenv('BASE_URL')) {
-    define('BASE_URL', getenv('BASE_URL'));
+    define('BASE_URL', rtrim(getenv('BASE_URL'), '/') . '/');
 }
 else {
     define('BASE_URL', $protocol . $host . $base_path);
