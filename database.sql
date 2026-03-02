@@ -106,7 +106,7 @@ CREATE TABLE `tabel_transaksi` (
   `lama_parkir` int(11) DEFAULT NULL COMMENT 'dalam jam',
   `total_bayar` int(11) DEFAULT NULL,
   `status` enum('masuk','keluar') NOT NULL DEFAULT 'masuk',
-  `tanggal_transaksi` date NOT NULL DEFAULT current_timestamp(),
+  `tanggal_transaksi` date NOT NULL DEFAULT (CURRENT_DATE),
   PRIMARY KEY (`id_transaksi`),
   KEY `id_kendaraan` (`id_kendaraan`),
   KEY `id_area` (`id_area`),
