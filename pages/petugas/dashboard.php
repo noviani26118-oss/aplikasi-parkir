@@ -1,11 +1,11 @@
 <?php
-require_once '../../config/database.php';
-require_once '../../functions/helpers.php';
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../functions/helpers.php';
 check_login();
 check_role(['petugas']);
 ?>
 
-<?php include '../../layouts/header.php'; ?>
+<?php include __DIR__ . '/../../layouts/header.php'; ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Dashboard Petugas</h1>
@@ -68,4 +68,4 @@ check_role(['petugas']);
     </div>
 </div>
 
-<?php include '../../layouts/footer.php'; ?>
+<?php include __DIR__ . '/../../layouts/footer.php'; ?>

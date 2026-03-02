@@ -1,6 +1,6 @@
 <?php
-require_once '../../config/database.php';
-require_once '../../functions/helpers.php';
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../functions/helpers.php';
 check_login();
 check_role(['owner', 'admin']); // Admin also might want to see reports
 
@@ -9,7 +9,7 @@ $tgl_akhir = $_GET['tgl_akhir'] ?? date('Y-m-d');
 
 ?>
 
-<?php include '../../layouts/header.php'; ?>
+<?php include __DIR__ . '/../../layouts/header.php'; ?>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Laporan Pendapatan Parkir</h1>
@@ -104,4 +104,4 @@ $tgl_akhir = $_GET['tgl_akhir'] ?? date('Y-m-d');
     }
 </style>
 
-<?php include '../../layouts/footer.php'; ?>
+<?php include __DIR__ . '/../../layouts/footer.php'; ?>
